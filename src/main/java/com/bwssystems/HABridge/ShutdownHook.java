@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author gaudryc
  */
-public class ShutdownHook extends Thread {
+public final class ShutdownHook extends Thread {
 
 	private final BridgeSettings bridgeSettings;
 	private final SystemControl theSystem;

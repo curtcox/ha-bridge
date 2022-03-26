@@ -22,7 +22,7 @@ import org.apache.http.conn.util.*;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
-public class UpnpListener {
+public final class UpnpListener {
 	private Logger log = LoggerFactory.getLogger(UpnpListener.class);
 	private UDPDatagramSender theUDPDatagramSender;
 	private MulticastSocket upnpMulticastSocket;

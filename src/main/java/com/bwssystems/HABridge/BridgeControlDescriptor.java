@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge;
 
-public class BridgeControlDescriptor {
+public final class BridgeControlDescriptor {
 	private boolean reinit;
 	private boolean stop;
 	private boolean linkButton;

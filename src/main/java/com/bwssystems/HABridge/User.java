@@ -2,7 +2,7 @@ package com.bwssystems.HABridge;
 
 import spark.utils.StringUtils;
 
-public class User {
+public final class User {
 	private int id;
 	
 	private String username;

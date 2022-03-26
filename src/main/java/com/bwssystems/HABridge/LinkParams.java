@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge;
 
-public class LinkParams {
+public final class LinkParams {
 	private Integer seconds;
 	private boolean silent;
 

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.java.dev.eval.Expression;
 
-public class BrightnessDecode {
+public final class BrightnessDecode {
 	private static final Logger log = LoggerFactory.getLogger(BrightnessDecode.class);
 	private static final String INTENSITY_PERCENT = "${intensity.percent}";
 	private static final String INTENSITY_DECIMAL_PERCENT = "${intensity.decimal_percent}";

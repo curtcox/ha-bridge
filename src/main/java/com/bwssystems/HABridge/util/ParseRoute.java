@@ -9,7 +9,7 @@ import java.util.*;
  * @author Henry Zheng
  * @url http://www.ireasoning.com
  */
-public class ParseRoute 
+public final class ParseRoute
 {
     private String _gateway;
     private String _ip;

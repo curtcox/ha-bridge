@@ -3,7 +3,7 @@ package com.bwssystems.HABridge;
 import java.util.Map;
 import com.bwssystems.HABridge.api.hue.WhitelistEntry;
 
-public class BridgeSecurityDescriptor {
+public final class BridgeSecurityDescriptor {
 	private Map<String, User> users;
 	private boolean useLinkButton;
 	private String execGarden;

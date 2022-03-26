@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.hue;
 
-public class ColorData {
+public final class ColorData {
 	public enum ColorMode { XY, CT, HS}
 
 	private ColorMode mode;

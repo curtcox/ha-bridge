@@ -2,7 +2,7 @@ package com.bwssystems.HABridge;
 
 import java.util.ArrayList;
 
-public class DeviceMapTypes {
+public final class DeviceMapTypes {
 
 	public final static String[] CUSTOM_DEVICE = { "custom", "Custom"};
 	public final static String[] VERA_DEVICE = { "veraDevice", "Vera Device"};

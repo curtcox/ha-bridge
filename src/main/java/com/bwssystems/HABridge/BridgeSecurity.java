@@ -29,7 +29,7 @@ import com.google.gson.JsonSyntaxException;
 
 import spark.Request;
 
-public class BridgeSecurity {
+public final class BridgeSecurity {
 	private static final Logger log = LoggerFactory.getLogger(BridgeSecurity.class);
 	private static final String USER_SESSION_ID = "user";
 	private static final String DEPRACATED_INTERNAL_USER = "thehabridgeuser";

@@ -2,7 +2,7 @@ package com.bwssystems.HABridge.util;
 
 import java.math.BigInteger;
 
-public class HexLibrary {
+public final class HexLibrary {
 
     public static String byteToHex(byte num) {
         char[] hexDigits = new char[2];

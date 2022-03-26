@@ -15,7 +15,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bwssystems.HABridge.dao.GroupDescriptor;
 import com.bwssystems.HABridge.util.BackupHandler;
 import com.bwssystems.HABridge.util.JsonTransformer;
 import com.google.gson.Gson;
@@ -26,7 +25,7 @@ import java.util.List;
  * This is an in memory list to manage the configured groups and saves the list as a JSON string to a file for later  
  * loading.
  */
-public class GroupRepository extends BackupHandler {
+public final class GroupRepository extends BackupHandler {
 	private Map<String, GroupDescriptor> groups;
     private Path repositoryPath;
 	private Gson gson;

@@ -6,7 +6,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TimeDecode {
+public final class TimeDecode {
 	private static final Logger log = LoggerFactory.getLogger(TimeDecode.class);
 	private static final String TIME_FORMAT = "${time.format(";
 	private static final String TIMESTAMP = "${time.millis}";

@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge;
 
-public class LoginResult {
+public final class LoginResult {
 	
 	private String error;
 	

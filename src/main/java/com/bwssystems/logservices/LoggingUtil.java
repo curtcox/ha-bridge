@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bwssystems.logservices.LogFileInfo;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
@@ -18,7 +17,7 @@ import ch.qos.logback.core.FileAppender;
 /**
  * Contains utility methods to interact with the logback during runtime.
  */
-public class LoggingUtil {
+public final class LoggingUtil {
 
 	/**
 	 * re-defines the logback logging levels as a Java enumeration. This is quite

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 // import com.bwssystems.HABridge.hue.ColorData;
 
-public class ColorDecode {
+public final class ColorDecode {
 	private static final Logger log = LoggerFactory.getLogger(ColorDecode.class);
 	private static final String COLOR_R = "${color.r}";
 	private static final String COLOR_G = "${color.g}";

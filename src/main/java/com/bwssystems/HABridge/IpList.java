@@ -2,7 +2,7 @@ package com.bwssystems.HABridge;
 
 import java.util.List;
 
-public class IpList {
+public final class IpList {
 	private List<NamedIP> devices;
 
 	public List<NamedIP> getDevices() {

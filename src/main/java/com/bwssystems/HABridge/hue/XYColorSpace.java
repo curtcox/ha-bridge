@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.hue;
 
-public class XYColorSpace {
+public final class XYColorSpace {
     float[] xy;
     int brightness;
 

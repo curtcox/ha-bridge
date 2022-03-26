@@ -31,7 +31,7 @@ import com.bwssystems.HABridge.plugins.fibaro.FibaroHome;
 import com.bwssystems.HABridge.plugins.homegenie.HomeGenieHome;
 import com.bwssystems.HABridge.util.UDPDatagramSender;
 
-public class HomeManager {
+public final class HomeManager {
 	private static final Logger log = LoggerFactory.getLogger(HomeManager.class);
 	Map<String, Home> homeList;
 	Map<String, Home> resourceList;

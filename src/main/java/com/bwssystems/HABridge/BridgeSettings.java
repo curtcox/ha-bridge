@@ -27,7 +27,7 @@ import com.bwssystems.HABridge.util.JsonTransformer;
 import com.bwssystems.HABridge.util.ParseRoute;
 import com.google.gson.Gson;
 
-public class BridgeSettings extends BackupHandler {
+public final class BridgeSettings extends BackupHandler {
 	private static final Logger log = LoggerFactory.getLogger(BridgeSettings.class);
 	private BridgeSettingsDescriptor theBridgeSettings;
 	private BridgeControlDescriptor bridgeControl;

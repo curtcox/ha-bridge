@@ -35,7 +35,7 @@ import com.google.gson.JsonSyntaxException;
 /**
 	spark core server for bridge configuration
  */
-public class DeviceResource {
+public final class DeviceResource {
     private static final String API_CONTEXT = "/api/devices";
     private static final Logger log = LoggerFactory.getLogger(DeviceResource.class);
     private DeviceRepository deviceRepository;

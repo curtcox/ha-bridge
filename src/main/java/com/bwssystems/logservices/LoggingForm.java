@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Form for the Logging Action.
  */
-public class LoggingForm implements Serializable {
+public final class LoggingForm implements Serializable {
 
     /** serialVersionUID. */
 	private static final long serialVersionUID = 5970927715241338665L;

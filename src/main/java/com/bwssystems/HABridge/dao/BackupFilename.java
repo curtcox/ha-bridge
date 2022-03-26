@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.dao;
 
-public class BackupFilename {
+public final class BackupFilename {
 	private String filename;
 	private String file;
 

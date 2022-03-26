@@ -18,7 +18,6 @@ import com.bwssystems.HABridge.api.hue.HueErrorResponse;
 import com.bwssystems.HABridge.api.hue.HuePublicConfig;
 import com.bwssystems.HABridge.api.hue.StateChangeBody;
 import com.bwssystems.HABridge.dao.*;
-import com.bwssystems.HABridge.hue.ColorData;
 import com.bwssystems.HABridge.plugins.hue.HueHome;
 import com.bwssystems.HABridge.util.JsonTransformer;
 import com.google.gson.Gson;
@@ -48,8 +47,7 @@ import java.util.Arrays;
  * Based on Armzilla's HueMulator - a Philips Hue emulator using sparkjava rest
  * server
  */
-
-public class HueMulator {
+public final class HueMulator {
 	private static final Logger log = LoggerFactory.getLogger(HueMulator.class);
 	private static final String HUE_CONTEXT = "/api";
 

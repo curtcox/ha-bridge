@@ -5,7 +5,7 @@ import spark.ResponseTransformer;
 /*
  * Implementation of a Json renderer through google GSON utility.
  */
-public class JsonTransformer implements ResponseTransformer {
+public final class JsonTransformer implements ResponseTransformer {
 
    private Gson gson = new Gson();
 

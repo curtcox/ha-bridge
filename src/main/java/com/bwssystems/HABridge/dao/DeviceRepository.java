@@ -37,7 +37,7 @@ import java.security.NoSuchAlgorithmException;
  * This is an in memory list to manage the configured devices and saves the list as a JSON string to a file for later  
  * loading.
  */
-public class DeviceRepository extends BackupHandler {
+public final class DeviceRepository extends BackupHandler {
 	private Map<String, DeviceDescriptor> devices;
 	private Path repositoryPath;
 	private Gson gson;

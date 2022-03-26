@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.hue;
 
-public class HueSatBri {
+public final class HueSatBri {
     int hue;
     int sat;
     int bri;

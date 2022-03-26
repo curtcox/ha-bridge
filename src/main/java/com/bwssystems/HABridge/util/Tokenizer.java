@@ -8,7 +8,7 @@ package com.bwssystems.HABridge.util;
  * @author Henry Zheng
  * @url http://www.ireasoning.com
  */
-public class Tokenizer
+public final class Tokenizer
 {
     private Tokenizer()
     {

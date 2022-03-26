@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.hue;
 
-public class MultiCommandUtil {
+public final class MultiCommandUtil {
 	private Integer setCount;
 	private Integer theDelay;
 	private Integer delayDefault;

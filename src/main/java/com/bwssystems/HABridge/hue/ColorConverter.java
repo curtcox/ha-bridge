@@ -20,7 +20,7 @@ package com.bwssystems.HABridge.hue;
  */
 
 
-public class ColorConverter {
+public final class ColorConverter {
 
     /**
      * Don't let anyone instantiate this class.

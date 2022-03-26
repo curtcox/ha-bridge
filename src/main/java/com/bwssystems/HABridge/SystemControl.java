@@ -43,7 +43,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 //import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.read.CyclicBufferAppender;
 
-public class SystemControl {
+public final class SystemControl {
     private static final Logger log = LoggerFactory.getLogger(SystemControl.class);
     public static final String CYCLIC_BUFFER_APPENDER_NAME = "CYCLIC";
     private LoggerContext lc; 

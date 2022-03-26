@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.hue;
 
-public class ColorMap {
+public final class ColorMap {
 	private double red;
 	private double green;
 	private double blue;

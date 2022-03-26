@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge;
 
-public class SecurityInfo {
+public final class SecurityInfo {
 	private boolean useLinkButton;
 	private boolean secureHueApi;
 	private boolean isSecure;

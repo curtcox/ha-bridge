@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import com.bwssystems.HABridge.api.hue.HueConstants;
 import com.bwssystems.HABridge.api.hue.WhitelistEntry;
 
-public class BridgeSettingsDescriptor {
+public final class BridgeSettingsDescriptor {
 	@SerializedName("upnpconfigaddress")
 	@Expose
 	private String upnpconfigaddress;

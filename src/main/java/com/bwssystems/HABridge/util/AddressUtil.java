@@ -5,7 +5,7 @@ import java.net.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddressUtil {
+public final class AddressUtil {
     final static Logger log = LoggerFactory.getLogger(AddressUtil.class);
 
     // added by https://github.com/pvint

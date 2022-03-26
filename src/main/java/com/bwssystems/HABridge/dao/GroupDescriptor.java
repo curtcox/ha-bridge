@@ -8,7 +8,7 @@ import com.bwssystems.HABridge.api.hue.GroupState;
 /*
  * Object to handle the device configuration
  */
-public class GroupDescriptor{
+public final class GroupDescriptor{
 	@SerializedName("id")
 	@Expose
 	private String id;

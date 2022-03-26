@@ -6,7 +6,7 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LinkButtonPressed extends TimerTask {
+public final class LinkButtonPressed extends TimerTask {
     private static final Logger log = LoggerFactory.getLogger(LinkButtonPressed.class);
 	private BridgeControlDescriptor linkDescriptor;
 	private Timer myTimer;

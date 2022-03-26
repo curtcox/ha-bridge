@@ -9,7 +9,7 @@ import java.net.SocketException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UDPDatagramSender {
+public final class UDPDatagramSender {
 	private Logger log = LoggerFactory.getLogger(UDPDatagramSender.class);
 	private DatagramSocket responseSocket = null;
 	private int udpResponsePort;

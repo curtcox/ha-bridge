@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bwssystems.HABridge.dao.DeviceDescriptor;
 
-public class DeviceDataDecode {
+public final class DeviceDataDecode {
 	private static final Logger log = LoggerFactory.getLogger(DeviceDataDecode.class);
 	private static final String DEVICE_ID = "${device.id}";
 	private static final String DEVICE_UNIQUEID = "${device.uniqueid}";

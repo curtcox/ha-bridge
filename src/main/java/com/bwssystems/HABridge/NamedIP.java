@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class NamedIP {
+public final class NamedIP {
 	private String name;
 	private String ip;
 	private String webhook;

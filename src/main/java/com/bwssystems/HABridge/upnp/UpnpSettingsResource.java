@@ -14,7 +14,7 @@ import static spark.Spark.get;
 /**
  * 
  */
-public class UpnpSettingsResource {
+public final class UpnpSettingsResource {
     private Logger log = LoggerFactory.getLogger(UpnpSettingsResource.class);
     
     private BridgeSettingsDescriptor theSettings;

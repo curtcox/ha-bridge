@@ -19,7 +19,7 @@ import ch.qos.logback.classic.Logger;
  * to be changed dynamically at runtime.
  */
 
-public class LoggingManager {
+public final class LoggingManager {
 
 	/** Show all loggers or only the configured loggers */
     private boolean showAll = false;

@@ -21,7 +21,7 @@ import java.util.Date;
  * Log file information.
  *
  */
-public class LogFileInfo {
+public final class LogFileInfo {
 
     private String fileName;
     private Long fileSize;

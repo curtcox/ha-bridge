@@ -9,7 +9,7 @@ import java.io.*;
  * @url http://www.ireasoning.com
  */
 
-public class StringArray implements Serializable
+public final class StringArray implements Serializable
 {
     public static final long serialVersionUID = 42L;
     public static final int DEFAULT_CAPACITY = 10;

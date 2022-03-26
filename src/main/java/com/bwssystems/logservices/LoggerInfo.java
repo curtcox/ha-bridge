@@ -9,7 +9,7 @@ import com.bwssystems.logservices.LoggingUtil.LogLevels;
  *
  *
  */
-public class LoggerInfo implements Serializable {
+public final class LoggerInfo implements Serializable {
 
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1085935297588739585L;

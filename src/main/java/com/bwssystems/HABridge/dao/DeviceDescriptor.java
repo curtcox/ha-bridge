@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 /*
  * Object to handle the device configuration
  */
-public class DeviceDescriptor{
+public final class DeviceDescriptor{
 	@SerializedName("id")
 	@Expose
 	private String id;

@@ -1,6 +1,6 @@
 package com.bwssystems.HABridge.dao;
 
-public class ErrorMessage {
+public final class ErrorMessage {
 	private String message;
 
 	public ErrorMessage(String message) {

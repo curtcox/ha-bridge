@@ -33,13 +33,10 @@ import com.bwssystems.HABridge.util.UDPDatagramSender;
 
 public final class HomeManager {
 	private static final Logger log = LoggerFactory.getLogger(HomeManager.class);
-	Map<String, Home> homeList;
-	Map<String, Home> resourceList;
+	private final Map<String, Home> homeList = new HashMap<>();
+	private final Map<String, Home> resourceList = new HashMap<>();
 	
-	public HomeManager() {
-		homeList = new HashMap<String, Home>();
-		resourceList = new HashMap<String, Home>();
-	}
+	public HomeManager() {}
 
 	// factory method
 	public void buildHomes(BridgeSettings bridgeSettings, UDPDatagramSender aUdpDatagramSender) {
@@ -155,6 +152,5 @@ public final class HomeManager {
 			aHome.closeHome();
 		}
 		homeList.clear();
-		homeList = null;
 	}
 }

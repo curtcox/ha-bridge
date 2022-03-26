@@ -14,7 +14,16 @@ import com.bwssystems.HABridge.upnp.UpnpListener;
 import com.bwssystems.HABridge.upnp.UpnpSettingsResource;
 import com.bwssystems.HABridge.util.UDPDatagramSender;
 
-public class HABridge {
+public final class HABridge {
+
+	private DeviceResource theResources;
+	private HueMulator theHueMulator;
+	private UpnpSettingsResource theSettingResponder;
+
+	private final BridgeSettings bridgeSettings = new BridgeSettings();
+	private final Version theVersion = new Version();
+	private final HomeManager homeManager = new HomeManager();
+	private static final Logger log = LoggerFactory.getLogger(HABridge.class);
 	private static SystemControl theSystem;
 	
 	/*
@@ -32,63 +41,28 @@ public class HABridge {
 	 * 
 	 * 
 	 */
-    public static void main(String[] args) {
-        Logger log = LoggerFactory.getLogger(HABridge.class);
-        DeviceResource theResources;
-        HomeManager homeManager;
-        HueMulator theHueMulator;
-        UDPDatagramSender udpSender;
-        UpnpSettingsResource theSettingResponder;
-        UpnpListener theUpnpListener;
-        BridgeSettings bridgeSettings;
-        Version theVersion;
-    	@SuppressWarnings("unused")
-		HttpClientPool thePool;
-		ShutdownHook shutdownHook = null;
+	public static void main(String[] args) {
+		new HABridge().start();
+	}
+
+	private boolean running() {
+		return !bridgeSettings.getBridgeControl().isStop();
+	}
+
+    private void start() {
 
         log.info("HA Bridge startup sequence...");
-        theVersion = new Version();
-        // Singleton initialization
-        thePool = new HttpClientPool();
 
-        bridgeSettings = new BridgeSettings();
     	// sparkjava config directive to set html static file location for Jetty
-        while(!bridgeSettings.getBridgeControl().isStop()) {
-            log.info("HA Bridge (v{}) initializing....", theVersion.getVersion() );
-			bridgeSettings.buildSettings();
-			if(bridgeSettings.getBridgeSecurity().isUseHttps()) {
-				secure(bridgeSettings.getBridgeSecurity().getKeyfilePath(), bridgeSettings.getBridgeSecurity().getKeyfilePassword(), null, null);
-				log.info("Using https for web and api calls");
-			}
-            bridgeSettings.getBridgeSecurity().removeTestUsers();
-	        // sparkjava config directive to set ip address for the web server to listen on
-	        ipAddress(bridgeSettings.getBridgeSettingsDescriptor().getWebaddress());
-	        // sparkjava config directive to set port for the web server to listen on
-	        port(bridgeSettings.getBridgeSettingsDescriptor().getServerPort());
-	    	staticFileLocation("/public");
-	    	initExceptionHandler((e) -> HABridge.theExceptionHandler(e, bridgeSettings.getBridgeSettingsDescriptor().getServerPort()));
-	        if(!bridgeSettings.getBridgeControl().isReinit())
-	        	init();
-	        bridgeSettings.getBridgeControl().setReinit(false);
-	        // setup system control api first
-	        theSystem = new SystemControl(bridgeSettings, theVersion);
-	        theSystem.setupServer();
+        while(running()) {
+			initialize();
+			addShutdownHook();
 
-			// Add shutdown hook to be able to properly stop server
-			if (shutdownHook != null) {
-				Runtime.getRuntime().removeShutdownHook(shutdownHook);
-			}
-			shutdownHook = new ShutdownHook(bridgeSettings, theSystem);
-			Runtime.getRuntime().addShutdownHook(shutdownHook);
-
-	        // setup the UDP Datagram socket to be used by the HueMulator and the upnpListener
-	        udpSender = UDPDatagramSender.createUDPDatagramSender(bridgeSettings.getBridgeSettingsDescriptor().getUpnpResponsePort());
-	        if(udpSender == null) {
+			UDPDatagramSender udpSender = createUDPDatagramSender();
+	        if (udpSender == null) {
 	        	bridgeSettings.getBridgeControl().setStop(true);	        	
-	        }
-	        else {
+	        } else {
 		        //Setup the device connection homes through the manager
-		        homeManager = new HomeManager();
 		        homeManager.buildHomes(bridgeSettings, udpSender);
 		        // setup the class to handle the resource setup rest api
 		        theResources = new DeviceResource(bridgeSettings, homeManager);
@@ -98,48 +72,56 @@ public class HABridge {
 		        // wait for the sparkjava initialization of the rest api classes to be complete
 		        awaitInitialization();
 
-		        if(bridgeSettings.getBridgeSettingsDescriptor().isTraceupnp()) {
-		        	log.info("Traceupnp: upnp config address: {} -useIface: {} on web server: {}:{}",
-							bridgeSettings.getBridgeSettingsDescriptor().getUpnpConfigAddress(),
-							bridgeSettings.getBridgeSettingsDescriptor().isUseupnpiface(),
-							bridgeSettings.getBridgeSettingsDescriptor().getWebaddress(),
-							bridgeSettings.getBridgeSettingsDescriptor().getServerPort());
-				}
-		        // setup the class to handle the upnp response rest api
+				logUpnpConfig();
+				// setup the class to handle the upnp response rest api
 		        theSettingResponder = new UpnpSettingsResource(bridgeSettings);
 		        theSettingResponder.setupServer();
 
-		        // start the upnp ssdp discovery listener
-		        theUpnpListener = null;
-		        try {
-					theUpnpListener = new UpnpListener(bridgeSettings, bridgeSettings.getBridgeControl(), udpSender);
-				} catch (IOException e) {
-					log.error("Could not initialize UpnpListener, exiting....", e);
-					theUpnpListener = null;
-				}
-		        if(theUpnpListener != null && theUpnpListener.startListening())
-		        	log.info("HA Bridge (v{}) reinitialization requessted....", theVersion.getVersion());
-		        else
-		        	bridgeSettings.getBridgeControl().setStop(true);
-		        if(bridgeSettings.getBridgeSettingsDescriptor().isSettingsChanged())
-		        	bridgeSettings.save(bridgeSettings.getBridgeSettingsDescriptor());
-		        log.info("Going to close all homes");
+				startupUpnpSsdpDiscoveryListener(udpSender);
+				log.info("Going to close all homes");
 		        homeManager.closeHomes();
 		        udpSender.closeResponseSocket();
-		        udpSender = null;
 	        }
 	        stop();
-	        if(!bridgeSettings.getBridgeControl().isStop()) {
-	        	try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					log.error("Sleep error: {}", e.getMessage());
-				}
-	        }
+			sleep();
         }
-        bridgeSettings.getBridgeSecurity().removeTestUsers();
-        if(bridgeSettings.getBridgeSecurity().isSettingsChanged())
-        	bridgeSettings.updateConfigFile();
+		shutdown();
+	}
+
+	private UDPDatagramSender createUDPDatagramSender(){
+		return UDPDatagramSender.createUDPDatagramSender(bridgeSettings.getBridgeSettingsDescriptor().getUpnpResponsePort());
+	}
+
+	private void logUpnpConfig() {
+		if(bridgeSettings.getBridgeSettingsDescriptor().isTraceupnp()) {
+			log.info("Traceupnp: upnp config address: {} -useIface: {} on web server: {}:{}",
+					bridgeSettings.getBridgeSettingsDescriptor().getUpnpConfigAddress(),
+					bridgeSettings.getBridgeSettingsDescriptor().isUseupnpiface(),
+					bridgeSettings.getBridgeSettingsDescriptor().getWebaddress(),
+					bridgeSettings.getBridgeSettingsDescriptor().getServerPort());
+		}
+	}
+
+	private void startupUpnpSsdpDiscoveryListener(UDPDatagramSender udpSender) {
+		UpnpListener theUpnpListener = null;
+		try {
+			theUpnpListener = new UpnpListener(bridgeSettings, bridgeSettings.getBridgeControl(), udpSender);
+		} catch (IOException e) {
+			log.error("Could not initialize UpnpListener, exiting....", e);
+			theUpnpListener = null;
+		}
+		if(theUpnpListener != null && theUpnpListener.startListening())
+			log.info("HA Bridge (v{}) reinitialization requessted....", theVersion.getVersion());
+		else
+			bridgeSettings.getBridgeControl().setStop(true);
+		if(bridgeSettings.getBridgeSettingsDescriptor().isSettingsChanged())
+			bridgeSettings.save(bridgeSettings.getBridgeSettingsDescriptor());
+	}
+
+	private void shutdown() {
+		bridgeSettings.getBridgeSecurity().removeTestUsers();
+		if(bridgeSettings.getBridgeSecurity().isSettingsChanged())
+			bridgeSettings.updateConfigFile();
 		try {
 			HttpClientPool.shutdown();
 		} catch (InterruptedException e) {
@@ -147,10 +129,46 @@ public class HABridge {
 		} catch (IOException e) {
 			log.warn("Error shutting down http pool: {}", e.getMessage());;
 		}
-		thePool = null;
-        log.info("HA Bridge (v{}) exiting....", theVersion.getVersion());
-        System.exit(0);
-    }
+		log.info("HA Bridge (v{}) exiting....", theVersion.getVersion());
+		System.exit(0);
+	}
+
+	private void initialize() {
+		log.info("HA Bridge (v{}) initializing....", theVersion.getVersion() );
+
+		bridgeSettings.buildSettings();
+		if (bridgeSettings.getBridgeSecurity().isUseHttps()) {
+			secure(bridgeSettings.getBridgeSecurity().getKeyfilePath(), bridgeSettings.getBridgeSecurity().getKeyfilePassword(), null, null);
+			log.info("Using https for web and api calls");
+		}
+		bridgeSettings.getBridgeSecurity().removeTestUsers();
+		// sparkjava config directive to set ip address for the web server to listen on
+		ipAddress(bridgeSettings.getBridgeSettingsDescriptor().getWebaddress());
+		// sparkjava config directive to set port for the web server to listen on
+		port(bridgeSettings.getBridgeSettingsDescriptor().getServerPort());
+		staticFileLocation("/public");
+		initExceptionHandler((e) -> HABridge.theExceptionHandler(e, bridgeSettings.getBridgeSettingsDescriptor().getServerPort()));
+		if(!bridgeSettings.getBridgeControl().isReinit())
+			init();
+		bridgeSettings.getBridgeControl().setReinit(false);
+		// setup system control api first
+		theSystem = new SystemControl(bridgeSettings, theVersion);
+		theSystem.setupServer();
+	}
+
+	private void sleep() {
+		if(running()) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				log.error("Sleep error: {}", e.getMessage());
+			}
+		}
+	}
+
+	private void addShutdownHook() {
+		Runtime.getRuntime().addShutdownHook(new ShutdownHook(bridgeSettings, theSystem));
+	}
     
     private static void theExceptionHandler(Exception e, Integer thePort) {
 		Logger log = LoggerFactory.getLogger(HABridge.class);
